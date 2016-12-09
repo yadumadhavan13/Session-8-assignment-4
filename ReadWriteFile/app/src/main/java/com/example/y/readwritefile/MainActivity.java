@@ -1,5 +1,6 @@
 package com.example.y.readwritefile;
 
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -36,19 +37,18 @@ public class MainActivity extends AppCompatActivity {
         add_data_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                writeexternalstorage(view);
-                readexternalstoragee(view);
+                new Mytask().execute();
             }
         });
         delete_data_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                deletefile(view);
+                deletefile();
             }
         });
     }
 
-    public void writeexternalstorage(View view){
+    public void writeexternalstorage(){
         String state ;
         state = Environment.getExternalStorageState();
         if(Environment.MEDIA_MOUNTED.equals(state)){
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void readexternalstoragee(View view){
+    public void readexternalstoragee(){
         File Root = Environment.getExternalStorageDirectory();
         File Dir = new File (Root.getAbsolutePath()+"/MyAppFile");
         File file  = new File(Dir,"MyMessage.txt");
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void deletefile(View view){
+    public void deletefile(){
         File Root = Environment.getExternalStorageDirectory();
         File Dir = new File (Root.getAbsolutePath()+"/MyAppFile");
         File file  = new File(Dir,"MyMessage.txt");
@@ -112,5 +112,32 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "File Not Found", Toast.LENGTH_SHORT).show();
         }
 
+    }
+    public class Mytask extends AsyncTask<Void,Void,String>
+    {
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+
+        @Override
+        protected String doInBackground(Void... voids) {
+
+            return null;
+        }
+
+
+
+        @Override
+        protected void onPostExecute(String o) {
+
+            writeexternalstorage();
+            readexternalstoragee();
+            Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_SHORT).show();
+            super.onPostExecute(o);
+        }
     }
 }
